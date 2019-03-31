@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion : '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: An example SAM template for Lambda Safe Deployments.
+
+Resources:
+  StlCardsStatsBackendFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs8.11
+      CodeUri: s3://stlcardsstats-codebucket/app.zip
+      AutoPublishAlias: live
+      DeploymentPreference:
+        Type: AllAtOnce
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /test
+            Method: get
