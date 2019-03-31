@@ -1,0 +1,25 @@
+{
+  "name": "stlcardsstatsbackend",
+  "version": "1.0.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KainBeoulve/STLCardsStatsBackend.git"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "babel-loader": "^8.0.5",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
+  },
+  "scripts": {
+    "clean": "rmdir /s /q build",
+    "build": "webpack --mode production",
+    "server": "webpack-dev-server"
+  },
+  "dependencies": {
+    "zip-webpack-plugin": "^3.0.0"
+  }
+}
