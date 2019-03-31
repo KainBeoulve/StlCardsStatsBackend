@@ -8,7 +8,7 @@ Resources:
     Properties:
       Handler: index.handler
       Runtime: nodejs8.10
-      CodeUri: ./
+      CodeUri: ./src
       Events:
         Api:
           Type: Api
