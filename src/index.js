@@ -1,8 +1,9 @@
 exports.handler = (event, context, callback) => {
-    const response = {
+    callback(null, {
         statusCode: '200',
-        headers: {},
-        body: "We did it!!!!"
-    };
-    callback(null, response);
+        headers: {
+            'Content-Type': 'text/html'
+        },
+        body: '<h1>WE DID IT!</h1>',
+    });
 };

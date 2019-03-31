@@ -5,6 +5,7 @@ phases:
     commands:
       - npm install
       - export BUCKET=stlcardsstats-backend-bucket
+      - npm run build
       - aws cloudformation package --template-file template.yaml --s3-bucket $BUCKET --output-template-file outputtemplate.yaml
 artifacts:
   type: zip
