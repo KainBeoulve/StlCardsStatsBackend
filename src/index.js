@@ -1,8 +1,8 @@
 exports.handler = (event, context, callback) => {
-    let response = {
-        statusCode: 200,
+    const response = {
+        statusCode: '200',
         headers: {},
-        body: "success"
+        body: "We did it!"
     };
     callback(null, response);
 };

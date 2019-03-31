@@ -18,8 +18,5 @@
     "clean": "rmdir /s /q build",
     "build": "webpack --mode production",
     "server": "webpack-dev-server"
-  },
-  "dependencies": {
-    "zip-webpack-plugin": "^3.0.0"
   }
 }

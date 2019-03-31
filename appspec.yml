@@ -1,9 +1,0 @@
-version: 0.0
-resources:
-  - name-of-function-to-deploy:
-      type: "AWS::Lambda::Function"
-      properties:
-        name: 'StlCardsStatsBackendLambda'
-        alias: 'stlcardslambda'
-        currentversion: "1"
-        targetversion: "2"

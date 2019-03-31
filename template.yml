@@ -7,11 +7,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
-      Runtime: nodejs8.11
-      CodeUri: s3://stlcardsstats-codebucket/app.zip
-      AutoPublishAlias: live
-      DeploymentPreference:
-        Type: AllAtOnce
+      Runtime: nodejs8.10
+      CodeUri: ./
       Events:
         Api:
           Type: Api
