@@ -25,7 +25,7 @@ const binaryMimeTypes = [
 exports.handler = (event, context) => {
     const app = express();
 
-    app.use('/', routes);
+    app.use('/.*/', routes);
 
     const server = awsServerlessExpress.createServer(app, null, binaryMimeTypes);
 
