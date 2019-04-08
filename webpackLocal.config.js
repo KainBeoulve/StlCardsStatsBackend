@@ -1,10 +1,10 @@
 const path = require('path');
 
 module.exports = {
-    entry: './src/index.js',
+    entry: './src/localIndex.js',
     target:'node',
     output: {
-        filename: 'index.js',
+        filename: 'localIndex.js',
         path: path.resolve(__dirname, 'build')
     },
 

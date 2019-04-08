@@ -6,6 +6,16 @@
     "type": "git",
     "url": "https://github.com/KainBeoulve/STLCardsStatsBackend.git"
   },
+  "scripts": {
+    "clean": "rmdir /s /q build",
+    "local_build": "webpack --mode production --config webpackLocal.config.js",
+    "build": "webpack --mode production --config webpack.config.js",
+    "start": "node build/localIndex.js"
+  },
+  "dependencies": {
+    "aws-serverless-express": "^3.3.6",
+    "express": "^4.16.4"
+  },
   "devDependencies": {
     "@babel/core": "^7.4.0",
     "@babel/plugin-proposal-class-properties": "^7.4.0",
@@ -13,10 +23,5 @@
     "babel-loader": "^8.0.5",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0"
-  },
-  "scripts": {
-    "clean": "rmdir /s /q build",
-    "build": "webpack --mode production",
-    "server": "webpack-dev-server"
   }
 }
