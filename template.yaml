@@ -72,7 +72,7 @@ Resources:
               - "ssm:GetParameter"
             Resource: "*"
       Roles:
-        - !Ref: StlCardsStatsBackendFunctionLambdaRole
+        - !Ref StlCardsStatsBackendFunctionLambdaRole
 
   StlCardsDataTable:
     Type: AWS::DynamoDB::Table
