@@ -5,7 +5,7 @@ import { routes } from 'routes'
 exports.handler = (event, context) => {
     const app = express();
 
-    app.get('/test', routes);
+    app.get('/', routes);
 
     const server = awsServerlessExpress.createServer(app);
 
