@@ -9,12 +9,29 @@ Resources:
       Handler: index.handler
       Runtime: nodejs8.10
       CodeUri: ./build
+      Role: !GetAtt StlCardsStatsBackendFunctionLambdaRole.Arn
       Events:
-        Api:
+        ProxyApiGreedy:
           Type: Api
           Properties:
-            Path: /test
-            Method: get
+            Path: /{proxy+}
+            Method: ANY
+
+  StlCardsStatsBackendFunctionLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service:
+                  - "lambda.amazonaws.com"
+              Action:
+                - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/CloudWatchFullAccess
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
 
   StlCardsDataTable:
     Type: AWS::DynamoDB::Table
