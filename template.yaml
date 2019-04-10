@@ -9,6 +9,11 @@ Resources:
       Handler: index.handler
       Runtime: nodejs8.10
       CodeUri: ./build
+      Environment:
+        Variables:
+          DATA_TABLE_NAME: !Ref StlCardsDataTable
+          SPORTS_FEEDS_API_KEY: '{{resolve:ssm-secure:SportsFeedsAPIKey:1}}'
+          SPORTS_FEEDS_API_PASSWORD: '{{resolve:ssm-secure:SportsFeedsAPIPassword:1}}'
       Role: !GetAtt StlCardsStatsBackendFunctionLambdaRole.Arn
       Events:
         root:
