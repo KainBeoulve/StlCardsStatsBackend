@@ -57,9 +57,22 @@ Resources:
                 - "lambda.amazonaws.com"
             Action:
               - "sts:AssumeRole"
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/CloudWatchFullAccess
-        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+
+  StlCardsStatsBackendFunctionLambdaRolePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: "StlCardsStatsBackendFunctionLambdaRolePolicy"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Action:
+              - "logs:*"
+              - "dynamodb:*"
+              - "ssm:GetParameter"
+            Resource: "*"
+      Roles:
+        - !Ref: StlCardsStatsBackendFunctionLambdaRole
 
   StlCardsDataTable:
     Type: AWS::DynamoDB::Table
