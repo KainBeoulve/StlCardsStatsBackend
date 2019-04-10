@@ -11,6 +11,11 @@ Resources:
       CodeUri: ./build
       Role: !GetAtt StlCardsStatsBackendFunctionLambdaRole.Arn
       Events:
+        root:
+          Type: Api
+          Properties:
+            Path: /
+            Method: get
         getProxy:
           Type: Api
           Properties:
