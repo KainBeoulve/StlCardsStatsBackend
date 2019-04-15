@@ -9,6 +9,7 @@ Resources:
   StlCardsStatsRestAPI:
     Type: AWS::Serverless::Api
     Properties:
+      Name: StlCardsStatsRestAPI
       StageName: Prod
       Auth:
         DefaultAuthorizer: MyCognitoAuth
