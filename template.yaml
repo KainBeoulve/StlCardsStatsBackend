@@ -4,11 +4,12 @@ Description: CFN Template for StlCardsStats Project
 
 Resources:
   ###########################################################################
-  # Lambda Function / Role / Policy
+  # Lambda Function / Role / Policy with API Gateway hooks
   ###########################################################################
   StlCardsStatsRestAPI:
     Type: AWS::Serverless::Api
     Properties:
+      StageName: Prod
       Auth:
         DefaultAuthorizer: MyCognitoAuth
         Authorizers:
