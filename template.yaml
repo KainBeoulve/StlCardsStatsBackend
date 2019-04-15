@@ -35,26 +35,31 @@ Resources:
         getProxy:
           Type: Api
           Properties:
+            RestApiId: StlCardsStatsRestAPI
             Path: '/{proxy+}'
             Method: get
         postProxy:
           Type: Api
           Properties:
+            RestApiId: StlCardsStatsRestAPI
             Path: '/{proxy+}'
             Method: post
         putProxy:
           Type: Api
           Properties:
+            RestApiId: StlCardsStatsRestAPI
             Path: '/{proxy+}'
             Method: put
         deleteProxy:
           Type: Api
           Properties:
+            RestApiId: StlCardsStatsRestAPI
             Path: '/{proxy+}'
             Method: delete
         optionsProxy:
           Type: Api
           Properties:
+            RestApiId: StlCardsStatsRestAPI
             Path: '/{proxy+}'
             Method: options
   StlCardsStatsBackendFunctionLambdaRole:
@@ -86,7 +91,7 @@ Resources:
         - !Ref StlCardsStatsBackendFunctionLambdaRole
 
   ###########################################################################
-  # DynamoDB Table
+  # DynamoDB Table & Read/Write Autoscaling Resources
   ###########################################################################
   StlCardsDataTable:
     Type: AWS::DynamoDB::Table
@@ -105,10 +110,6 @@ Resources:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
       TableName: "StlCardsDataTable"
-
-  #################################################################################
-  # DDB Table Read/Write Autoscaling Resources
-  #################################################################################
   WriteCapacityScalableTarget:
     Type: AWS::ApplicationAutoScaling::ScalableTarget
     Properties:
