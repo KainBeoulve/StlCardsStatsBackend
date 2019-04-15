@@ -2,20 +2,27 @@ AWSTemplateFormatVersion : '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: CFN Template for StlCardsStats Project
 
+Globals:
+  Api:
+    Auth:
+      DefaultAuthorizer: MyCognitoAuth
+      Authorizers:
+        MyCognitoAuth:
+          UserPoolArn: !GetAtt StlCardsStatsCognitoUserPool.Arn
 Resources:
   ###########################################################################
   # Lambda Function / Role / Policy with API Gateway hooks
   ###########################################################################
-  StlCardsStatsRestAPI:
-    Type: AWS::Serverless::Api
-    Properties:
-      Name: StlCardsStatsRestAPI
-      StageName: Prod
-      Auth:
-        DefaultAuthorizer: MyCognitoAuth
-        Authorizers:
-          MyCognitoAuth:
-            UserPoolArn: !GetAtt StlCardsStatsCognitoUserPool.Arn
+#  StlCardsStatsRestAPI:
+#    Type: AWS::Serverless::Api
+#    Properties:
+#      Name: StlCardsStatsRestAPI
+#      StageName: Prod
+#      Auth:
+#        DefaultAuthorizer: MyCognitoAuth
+#        Authorizers:
+#          MyCognitoAuth:
+#            UserPoolArn: !GetAtt StlCardsStatsCognitoUserPool.Arn
   StlCardsStatsBackendLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -30,9 +37,10 @@ Resources:
         root:
           Type: Api
           Properties:
-            RestApiId: StlCardsStatsRestAPI
             Path: /
             Method: get
+            Auth:
+              Authorizer: MyCognitoAuth
 #        getProxy:
 #          Type: Api
 #          Properties:
