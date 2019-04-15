@@ -3,7 +3,10 @@ Transform: AWS::Serverless-2016-10-31
 Description: CFN Template for StlCardsStats Project
 
 Resources:
-  StlCardsStatsBackendFunction:
+  ###########################################################################
+  # Lambda Function / Role / Policy
+  ###########################################################################
+  StlCardsStatsBackendLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
@@ -19,6 +22,10 @@ Resources:
           Properties:
             Path: /
             Method: get
+            Auth:
+              Authorizers:
+                MyCognitoAuth:
+                  UserPoolArn: !GetAtt StlCardsStatsCognitoUserPool.Arn
         getProxy:
           Type: Api
           Properties:
@@ -44,7 +51,6 @@ Resources:
           Properties:
             Path: '/{proxy+}'
             Method: options
-
   StlCardsStatsBackendFunctionLambdaRole:
     Type: AWS::IAM::Role
     Properties:
@@ -57,7 +63,6 @@ Resources:
                 - "lambda.amazonaws.com"
             Action:
               - "sts:AssumeRole"
-
   StlCardsStatsBackendFunctionLambdaRolePolicy:
     Type: AWS::IAM::Policy
     Properties:
@@ -74,6 +79,9 @@ Resources:
       Roles:
         - !Ref StlCardsStatsBackendFunctionLambdaRole
 
+  ###########################################################################
+  # DynamoDB Table
+  ###########################################################################
   StlCardsDataTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -92,6 +100,9 @@ Resources:
         WriteCapacityUnits: 5
       TableName: "StlCardsDataTable"
 
+  #################################################################################
+  # DDB Table Read/Write Autoscaling Resources
+  #################################################################################
   WriteCapacityScalableTarget:
     Type: AWS::ApplicationAutoScaling::ScalableTarget
     Properties:
@@ -104,7 +115,6 @@ Resources:
       RoleARN: !GetAtt ScalingRole.Arn
       ScalableDimension: dynamodb:table:WriteCapacityUnits
       ServiceNamespace: dynamodb
-
   ReadCapacityScalableTarget:
     Type: AWS::ApplicationAutoScaling::ScalableTarget
     Properties:
@@ -117,7 +127,6 @@ Resources:
       RoleARN: !GetAtt ScalingRole.Arn
       ScalableDimension: dynamodb:table:ReadCapacityUnits
       ServiceNamespace: dynamodb
-
   ScalingRole:
     Type: AWS::IAM::Role
     Properties:
@@ -149,7 +158,6 @@ Resources:
                   - "cloudwatch:SetAlarmState"
                   - "cloudwatch:DeleteAlarms"
                 Resource: "*"
-
   WriteScalingPolicy:
     Type: AWS::ApplicationAutoScaling::ScalingPolicy
     Properties:
@@ -162,7 +170,6 @@ Resources:
         ScaleOutCooldown: 60
         PredefinedMetricSpecification:
           PredefinedMetricType: DynamoDBWriteCapacityUtilization
-
   ReadScalingPolicy:
     Type: AWS::ApplicationAutoScaling::ScalingPolicy
     Properties:
@@ -175,3 +182,27 @@ Resources:
         ScaleOutCooldown: 60
         PredefinedMetricSpecification:
           PredefinedMetricType: DynamoDBReadCapacityUtilization
+
+  #################################################################################
+  # Cognito Resources
+  #################################################################################
+  StlCardsStatsCognitoUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: true
+        UnusedAccountValidityDays: 90
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: true
+          RequireUppercase: true
+      UserPoolName: StlCardsStatsCognitoUserPool
+  StlCardsStatsCognitoUserPoolAppClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: StlCardsStatsCognitoUserPoolAppClient
+      GenerateSecret: false
+      UserPoolId: !Ref StlCardsStatsCognitoUserPool
