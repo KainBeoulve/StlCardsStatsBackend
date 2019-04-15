@@ -90,6 +90,15 @@ Resources:
             Resource: "*"
       Roles:
         - !Ref StlCardsStatsBackendFunctionLambdaRole
+  LambdaApiGatewayPermissions:
+    Type: AWS::Lambda::Permission
+    DependsOn:
+      - StlCardsStatsRestAPI
+      - StlCardsStatsBackendLambdaFunction
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref StlCardsStatsBackendLambdaFunction
+      Principal: apigateway.amazonaws.com
 
   ###########################################################################
   # DynamoDB Table & Read/Write Autoscaling Resources
