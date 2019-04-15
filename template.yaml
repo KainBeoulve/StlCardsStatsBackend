@@ -33,36 +33,36 @@ Resources:
             RestApiId: StlCardsStatsRestAPI
             Path: /
             Method: get
-        getProxy:
-          Type: Api
-          Properties:
-            RestApiId: StlCardsStatsRestAPI
-            Path: '/{proxy+}'
-            Method: get
-        postProxy:
-          Type: Api
-          Properties:
-            RestApiId: StlCardsStatsRestAPI
-            Path: '/{proxy+}'
-            Method: post
-        putProxy:
-          Type: Api
-          Properties:
-            RestApiId: StlCardsStatsRestAPI
-            Path: '/{proxy+}'
-            Method: put
-        deleteProxy:
-          Type: Api
-          Properties:
-            RestApiId: StlCardsStatsRestAPI
-            Path: '/{proxy+}'
-            Method: delete
-        optionsProxy:
-          Type: Api
-          Properties:
-            RestApiId: StlCardsStatsRestAPI
-            Path: '/{proxy+}'
-            Method: options
+#        getProxy:
+#          Type: Api
+#          Properties:
+#            RestApiId: StlCardsStatsRestAPI
+#            Path: '/{proxy+}'
+#            Method: get
+#        postProxy:
+#          Type: Api
+#          Properties:
+#            RestApiId: StlCardsStatsRestAPI
+#            Path: '/{proxy+}'
+#            Method: post
+#        putProxy:
+#          Type: Api
+#          Properties:
+#            RestApiId: StlCardsStatsRestAPI
+#            Path: '/{proxy+}'
+#            Method: put
+#        deleteProxy:
+#          Type: Api
+#          Properties:
+#            RestApiId: StlCardsStatsRestAPI
+#            Path: '/{proxy+}'
+#            Method: delete
+#        optionsProxy:
+#          Type: Api
+#          Properties:
+#            RestApiId: StlCardsStatsRestAPI
+#            Path: '/{proxy+}'
+#            Method: options
   StlCardsStatsBackendFunctionLambdaRole:
     Type: AWS::IAM::Role
     Properties:
