@@ -9,20 +9,11 @@ Globals:
       Authorizers:
         MyCognitoAuth:
           UserPoolArn: !GetAtt StlCardsStatsCognitoUserPool.Arn
+
 Resources:
   ###########################################################################
   # Lambda Function / Role / Policy with API Gateway hooks
   ###########################################################################
-#  StlCardsStatsRestAPI:
-#    Type: AWS::Serverless::Api
-#    Properties:
-#      Name: StlCardsStatsRestAPI
-#      StageName: Prod
-#      Auth:
-#        DefaultAuthorizer: MyCognitoAuth
-#        Authorizers:
-#          MyCognitoAuth:
-#            UserPoolArn: !GetAtt StlCardsStatsCognitoUserPool.Arn
   StlCardsStatsBackendLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -41,36 +32,41 @@ Resources:
             Method: get
             Auth:
               Authorizer: MyCognitoAuth
-#        getProxy:
-#          Type: Api
-#          Properties:
-#            RestApiId: StlCardsStatsRestAPI
-#            Path: '/{proxy+}'
-#            Method: get
-#        postProxy:
-#          Type: Api
-#          Properties:
-#            RestApiId: StlCardsStatsRestAPI
-#            Path: '/{proxy+}'
-#            Method: post
-#        putProxy:
-#          Type: Api
-#          Properties:
-#            RestApiId: StlCardsStatsRestAPI
-#            Path: '/{proxy+}'
-#            Method: put
-#        deleteProxy:
-#          Type: Api
-#          Properties:
-#            RestApiId: StlCardsStatsRestAPI
-#            Path: '/{proxy+}'
-#            Method: delete
-#        optionsProxy:
-#          Type: Api
-#          Properties:
-#            RestApiId: StlCardsStatsRestAPI
-#            Path: '/{proxy+}'
-#            Method: options
+        getProxy:
+          Type: Api
+          Properties:
+            Path: '/{proxy+}'
+            Method: get
+            Auth:
+              Authorizer: MyCognitoAuth
+        postProxy:
+          Type: Api
+          Properties:
+            Path: '/{proxy+}'
+            Method: post
+            Auth:
+              Authorizer: MyCognitoAuth
+        putProxy:
+          Type: Api
+          Properties:
+            Path: '/{proxy+}'
+            Method: put
+            Auth:
+              Authorizer: MyCognitoAuth
+        deleteProxy:
+          Type: Api
+          Properties:
+            Path: '/{proxy+}'
+            Method: delete
+            Auth:
+              Authorizer: MyCognitoAuth
+        optionsProxy:
+          Type: Api
+          Properties:
+            Path: '/{proxy+}'
+            Method: options
+            Auth:
+              Authorizer: MyCognitoAuth
   StlCardsStatsBackendFunctionLambdaRole:
     Type: AWS::IAM::Role
     Properties:
@@ -98,15 +94,6 @@ Resources:
             Resource: "*"
       Roles:
         - !Ref StlCardsStatsBackendFunctionLambdaRole
-#  LambdaApiGatewayPermissions:
-#    Type: AWS::Lambda::Permission
-#    DependsOn:
-#      - StlCardsStatsRestAPI
-#      - StlCardsStatsBackendLambdaFunction
-#    Properties:
-#      Action: lambda:InvokeFunction
-#      FunctionName: !Ref StlCardsStatsBackendLambdaFunction
-#      Principal: apigateway.amazonaws.com
 
   ###########################################################################
   # DynamoDB Table & Read/Write Autoscaling Resources
