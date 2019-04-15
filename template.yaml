@@ -6,6 +6,14 @@ Resources:
   ###########################################################################
   # Lambda Function / Role / Policy
   ###########################################################################
+  StlCardsStatsRestAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      Auth:
+        DefaultAuthorizer: MyCognitoAuth
+        Authorizers:
+          MyCognitoAuth:
+            UserPoolArn: !GetAtt StlCardsStatsCognitoUserPool.Arn
   StlCardsStatsBackendLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -20,13 +28,9 @@ Resources:
         root:
           Type: Api
           Properties:
+            RestApiId: StlCardsStatsRestAPI
             Path: /
             Method: get
-            Auth:
-              DefaultAuthorizer: MyCognitoAuth
-              Authorizers:
-                MyCognitoAuth:
-                  UserPoolArn: !GetAtt StlCardsStatsCognitoUserPool.Arn
         getProxy:
           Type: Api
           Properties:
