@@ -23,6 +23,7 @@ Resources:
             Path: /
             Method: get
             Auth:
+              DefaultAuthorizer: MyCognitoAuth
               Authorizers:
                 MyCognitoAuth:
                   UserPoolArn: !GetAtt StlCardsStatsCognitoUserPool.Arn
