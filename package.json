@@ -13,6 +13,7 @@
     "start": "node build/localIndex.js"
   },
   "dependencies": {
+    "aws-sdk": "^2.438.0",
     "aws-serverless-express": "^3.3.6",
     "express": "^4.16.4",
     "mysportsfeeds-node": "^2.0.1"
@@ -22,6 +23,7 @@
     "@babel/plugin-proposal-class-properties": "^7.4.0",
     "@babel/preset-env": "^7.4.2",
     "babel-loader": "^8.0.5",
+    "babel-polyfill": "^6.26.0",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0"
   }

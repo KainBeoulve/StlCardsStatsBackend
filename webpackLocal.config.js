@@ -1,7 +1,8 @@
 const path = require('path');
+require("babel-polyfill");
 
 module.exports = {
-    entry: './src/localIndex.js',
+    entry: ["babel-polyfill", './src/localIndex.js'],
     target:'node',
     output: {
         filename: 'localIndex.js',
