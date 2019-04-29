@@ -1,9 +1,9 @@
 import express from 'express';
-import { get_routes } from 'get_routes'
+import Router from 'routers/Router'
 
 const app = express();
 
-app.use('/get', get_routes);
+app.use('/', Router);
 
 app.listen(9000, () => {
     console.log("App Listening on port 9000");

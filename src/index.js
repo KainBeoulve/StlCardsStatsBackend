@@ -1,11 +1,11 @@
 import express from 'express';
 import awsServerlessExpress from 'aws-serverless-express';
-import { get_routes } from 'get_routes'
+import Router from 'routers/Router'
 
 exports.handler = (event, context) => {
     const app = express();
 
-    app.use('/get', get_routes);
+    app.use('/', Router);
 
     const server = awsServerlessExpress.createServer(app);
 
