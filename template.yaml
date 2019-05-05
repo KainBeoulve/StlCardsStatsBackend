@@ -197,7 +197,7 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
-      TableName: "StlCardsDataTable"
+      TableName: "StlCardsPlayerTable"
 
   #################################################################################
   # Cognito Resources
