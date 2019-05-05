@@ -28,5 +28,12 @@ module.exports = {
             "node_modules",
             "src"
         ]
-    }
+    },
+
+    stats: {
+        warningsFilter: warning => {
+            // Critical dependency
+            return RegExp("node_modules/express/lib/view.js").test(warning);
+        }
+    },
 };

@@ -12,7 +12,7 @@ export default class DynamoDBClient {
      * @param tableName: name of table to put data into
      * @returns {Promise<PromiseResult<DynamoDB.PutItemOutput, AWSError>>}
      */
-    addPlayerData = (items, tableName) => {
+    putItemInTable = (items, tableName) => {
         const mappedItems = {};
         Object.keys(items).forEach(key => {
             const typeString = this.getValueType(items[key]);
@@ -31,5 +31,5 @@ export default class DynamoDBClient {
         } else {
             throw new Error(`Unsupported Item Type for Item ${value}`);
         }
-    }
+    };
 }

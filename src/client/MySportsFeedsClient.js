@@ -7,13 +7,12 @@ export default class MySportsFeedsClient {
         this.msf.authenticate(key, password);
     };
 
-    getActivePlayers = async () => {
+    getPlayerData = async (playerName) => {
         try {
             return await this.msf.getData("mlb", "2019-regular", "active_players", "json",
                 {
                     team: "stl",
-                    rosterstatus: "assigned-to-roster,assigned-to-injury-list",
-                    sort: "player.lastname",
+                    player: playerName,
                     force: true
                 });
         } catch (err) {
