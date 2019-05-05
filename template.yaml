@@ -23,6 +23,7 @@ Resources:
       Environment:
         Variables:
           DATA_TABLE_NAME: !Ref StlCardsDataTable
+          PLAYER_TABLE_NAME: !Ref StlCardsPlayerTable
       Role: !GetAtt StlCardsStatsBackendFunctionLambdaRole.Arn
       Events:
         root:
@@ -84,7 +85,7 @@ Resources:
         - !Ref StlCardsStatsBackendFunctionLambdaRole
 
   ###########################################################################
-  # DynamoDB Table & Read/Write Autoscaling Resources
+  # DynamoDB Tables & Read/Write Autoscaling Resources
   ###########################################################################
   StlCardsDataTable:
     Type: AWS::DynamoDB::Table
@@ -182,6 +183,21 @@ Resources:
         ScaleOutCooldown: 60
         PredefinedMetricSpecification:
           PredefinedMetricType: DynamoDBReadCapacityUtilization
+
+
+  StlCardsPlayerTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "PlayerName"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "PlayerName"
+          KeyType: "HASH"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      TableName: "StlCardsDataTable"
 
   #################################################################################
   # Cognito Resources
