@@ -25,6 +25,8 @@ Resources:
           DATA_TABLE_NAME: !Ref StlCardsDataTable
           PLAYER_TABLE_NAME: !Ref StlCardsPlayerTable
       Role: !GetAtt StlCardsStatsBackendFunctionLambdaRole.Arn
+      Timeout: 900
+      MemorySize: 3008
       Events:
         root:
           Type: Api
