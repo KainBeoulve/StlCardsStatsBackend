@@ -16,16 +16,22 @@ SyncAllPlayerLogs.all('/', async (req, res) => {
 
         // Authenticate with MySportsFeeds then acquire data
         const msfClient = new MySportsFeedsClient(key, password);
-        const data = await msfClient.getAllGameLogs();
+        const dynamoDBClient = new DynamoDBClient();
+        const lastSyncedDate = await dynamoDBClient.getLastSyncedDate();
+        const data = await msfClient.getAllGameLogs(lastSyncedDate);
 
         // Add all game log data to the data table
-        const dynamoDBClient = new DynamoDBClient();
+
         const addedPlayers = [];
+        let mostRecentDate = lastSyncedDate || 0;
         await Promise.all(data.playergamelogs.gamelogs.map(log => {
             const playerName = `${log.player.LastName.replace(/[^a-zA-Z]/g, "")}-${log.player.FirstName.replace(/[^a-zA-Z]/g, "")}`;
+            const date = parseInt(log.game.date.replace(/-/g, ""), 10);
+            mostRecentDate = date > mostRecentDate ? date : mostRecentDate;
+
             const items = {
                 PlayerName: playerName,
-                Date: parseInt(log.game.date.replace(/-/g, ""), 10)
+                Date: date
             };
 
             if (!addedPlayers.includes(playerName)) {
@@ -38,20 +44,27 @@ SyncAllPlayerLogs.all('/', async (req, res) => {
             return dynamoDBClient.putItemInTable(items, Constants.DATA_TABLE_NAME);
         }));
 
+        // Add the special item for lastSyncedDate to the players table
+        await dynamoDBClient.putItemInTable(
+            {
+                PlayerName: Constants.LAST_SYNCED_DATE,
+                Date: mostRecentDate
+            }, Constants.PLAYER_TABLE_NAME);
+
         // Add all player biographical data to the player table
         await Promise.all(addedPlayers.map(player => {
             return syncPlayerInfo(msfClient, dynamoDBClient, player);
         }));
 
         // Return success message assuming all data writes were successful
-        res.status(200).set('Content-Type', 'application/json').send({success:true});
+        res.status(200).set('Content-Type', 'application/json').send({success:true, oldSyncDate: lastSyncedDate, newSyncDate: mostRecentDate});
     } catch (err) {
         console.error(`${new Date()}: Error syncing player logs: ${err.message}`);
         res.status(400).set('Content-Type', 'text/plain').send(err.message);
     }
 });
 
-async function syncPlayerInfo(msfClient, dynamoDBClient, playerName) {
+syncPlayerInfo = async (msfClient, dynamoDBClient, playerName) => {
     const playerData = await msfClient.getPlayerData(HelperFunctions.swapPlayerNames(playerName));
 
     const mappedPlayerItems = {
@@ -59,12 +72,12 @@ async function syncPlayerInfo(msfClient, dynamoDBClient, playerName) {
     };
 
     Constants.PLAYER_FIELDS.forEach(field => {
-        const fieldData = playerData.activeplayers.playerentry[0].player[field];
-        if (fieldData) {
-            mappedPlayerItems[field] = fieldData;
-        }
-    });
+    const fieldData = playerData.activeplayers.playerentry[0].player[field];
+    if (fieldData) {
+        mappedPlayerItems[field] = fieldData;
+    }
+});
 
-    await dynamoDBClient.putItemInTable(mappedPlayerItems, Constants.PLAYER_TABLE_NAME);
-}
+await dynamoDBClient.putItemInTable(mappedPlayerItems, Constants.PLAYER_TABLE_NAME);
+};
 module.exports = SyncAllPlayerLogs;

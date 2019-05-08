@@ -21,6 +21,10 @@ class MySportsFeedsClient {
         }
     };
 
+    /**
+     * Syncs data from MySportsFeeds into Dynamo
+     * @param lastSyncedDate - earliest date to begin syncing data from
+     */
     async getAllGameLogs(lastSyncedDate) {
         try {
             const parsedDate = moment(lastSyncedDate, ["YYYYMMDD", "YYYY-MM-DD"]);
