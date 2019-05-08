@@ -1,7 +1,7 @@
-import * as AWS from 'aws-sdk';
-import HelperFunctions from "utils/HelperFunctions";
+const AWS = require("aws-sdk");
+const HelperFunctions = require("../utils/HelperFunctions");
 
-export default class DynamoDBClient {
+class DynamoDBClient {
     constructor() {
         HelperFunctions.setAWSConfig(AWS);
         this.DynamoDB = new AWS.DynamoDB({apiVersion: '2012-08-10'});
@@ -12,16 +12,16 @@ export default class DynamoDBClient {
      * @param tableName: name of table to put data into
      * @returns {Promise<PromiseResult<DynamoDB.PutItemOutput, AWSError>>}
      */
-    putItemInTable = (items, tableName) => {
+    putItemInTable(items, tableName) {
         const mappedItems = {};
         Object.keys(items).forEach(key => {
-            const typeString = this.getValueType(items[key]);
+            const typeString = DynamoDBClient.getValueType(items[key]);
             mappedItems[key] = {[typeString]: items[key].toString()};
         });
         return this.DynamoDB.putItem({Item: mappedItems, TableName: tableName}).promise();
     };
 
-    getValueType = (value) => {
+    static getValueType(value) {
         if (typeof value === "string") {
             return "S";
         } else if (typeof value === "number") {
@@ -33,3 +33,4 @@ export default class DynamoDBClient {
         }
     };
 }
+module.exports = DynamoDBClient;

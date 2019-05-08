@@ -1,6 +1,6 @@
-import express from 'express';
-import awsServerlessExpress from 'aws-serverless-express';
-import Router from 'routers/Router'
+const express = require("express");
+const awsServerlessExpress = require("aws-serverless-express");
+const Router = require("./routers/Router");
 
 exports.handler = (event, context) => {
     const app = express();

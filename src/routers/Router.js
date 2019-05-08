@@ -1,8 +1,8 @@
-import express from 'express';
-import SyncAllPlayerLogs from "api/SyncAllPlayerLogs"
+const express = require("express");
+const SyncAllPlayerLogs = require("../api/SyncAllPlayerLogs");
 
 const Router = express.Router();
 
 Router.use('/syncAllPlayerLogs', SyncAllPlayerLogs);
 
-export default Router;
+module.exports = Router;

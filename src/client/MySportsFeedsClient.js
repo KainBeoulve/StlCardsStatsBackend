@@ -1,13 +1,13 @@
-import mySportsFeeds from "mysportsfeeds-node";
-import moment from "moment";
+const mySportsFeeds = require("mysportsfeeds-node");
+const moment = require("moment");
 
-export default class MySportsFeedsClient {
+class MySportsFeedsClient {
     constructor(key, password) {
         this.msf = new mySportsFeeds("1.2", false, null);
         this.msf.authenticate(key, password);
     };
 
-    getPlayerData = async (playerName) => {
+    async getPlayerData(playerName) {
         try {
             return await this.msf.getData("mlb", "2019-regular", "active_players", "json",
                 {
@@ -21,7 +21,7 @@ export default class MySportsFeedsClient {
         }
     };
 
-    getAllGameLogs = async (lastSyncedDate) => {
+    async getAllGameLogs(lastSyncedDate) {
         try {
             const parsedDate = moment(lastSyncedDate, ["YYYYMMDD", "YYYY-MM-DD"]);
             return await this.msf.getData("mlb", "2019-regular", "player_gamelogs", "json",
@@ -37,3 +37,4 @@ export default class MySportsFeedsClient {
         }
     };
 }
+module.exports = MySportsFeedsClient;

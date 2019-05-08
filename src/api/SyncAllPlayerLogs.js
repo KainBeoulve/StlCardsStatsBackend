@@ -1,9 +1,9 @@
-import express from 'express';
-import SystemsManagerClient from "client/SystemsManagerClient";
-import DynamoDBClient from "client/DynamoDBClient";
-import MySportsFeedsClient from "client/MySportsFeedsClient";
-import Constants from "utils/Constants";
-import HelperFunctions from "utils/HelperFunctions";
+const express = require("express");
+const SystemsManagerClient = require("../client/SystemsManagerClient");
+const DynamoDBClient = require("../client/DynamoDBClient");
+const MySportsFeedsClient = require("../client/MySportsFeedsClient");
+const Constants = require("../utils/Constants");
+const HelperFunctions = require("../utils/HelperFunctions");
 
 const SyncAllPlayerLogs = express.Router();
 
@@ -51,7 +51,7 @@ SyncAllPlayerLogs.all('/', async (req, res) => {
     }
 });
 
-const syncPlayerInfo = async (msfClient, dynamoDBClient, playerName) => {
+async function syncPlayerInfo(msfClient, dynamoDBClient, playerName) {
     const playerData = await msfClient.getPlayerData(HelperFunctions.swapPlayerNames(playerName));
 
     const mappedPlayerItems = {
@@ -66,6 +66,5 @@ const syncPlayerInfo = async (msfClient, dynamoDBClient, playerName) => {
     });
 
     await dynamoDBClient.putItemInTable(mappedPlayerItems, Constants.PLAYER_TABLE_NAME);
-};
-
-export default SyncAllPlayerLogs;
+}
+module.exports = SyncAllPlayerLogs;

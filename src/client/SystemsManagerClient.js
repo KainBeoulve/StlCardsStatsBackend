@@ -1,13 +1,13 @@
-import * as AWS from 'aws-sdk';
-import HelperFunctions from "utils/HelperFunctions";
+const AWS = require("aws-sdk");
+const HelperFunctions = require("../utils/HelperFunctions");
 
-export default class SystemsManagerClient {
+class SystemsManagerClient {
     constructor() {
         HelperFunctions.setAWSConfig(AWS);
         this.SSM = new AWS.SSM({apiVersion: '2014-11-06'});
     };
 
-    getParameter = async (parameterName, withDecryption) => {
+    async getParameter(parameterName, withDecryption) {
         try {
             const data = await this.SSM.getParameter(
                 {Name: parameterName, WithDecryption: withDecryption}).promise();
@@ -18,3 +18,4 @@ export default class SystemsManagerClient {
         }
     };
 }
+module.exports = SystemsManagerClient;

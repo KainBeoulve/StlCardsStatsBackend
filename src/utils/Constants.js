@@ -1,5 +1,16 @@
-export default class Constants {
-    static DATA_TABLE_NAME = process.env.DATA_TABLE_NAME || "StlCardsDataTable";
-    static PLAYER_TABLE_NAME = process.env.PLAYER_TABLE_NAME || "StlCardsPlayerTable";
-    static PLAYER_FIELDS = [ "JerseyNumber", "Position", "Height", "Weight", "BirthDate", "Age", "officialImageSrc" ];
+class Constants {
+    static get DATA_TABLE_NAME() { return process.env.DATA_TABLE_NAME || "StlCardsDataTable" };
+    static get PLAYER_TABLE_NAME() { return process.env.PLAYER_TABLE_NAME || "StlCardsPlayerTable" };
+    static get PLAYER_FIELDS() {
+        return [
+            "JerseyNumber",
+            "Position",
+            "Height",
+            "Weight",
+            "BirthDate",
+            "Age",
+            "officialImageSrc"
+        ]
+    };
 }
+module.exports = Constants;
