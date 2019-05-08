@@ -9,7 +9,7 @@
   "scripts": {
     "clean": "if exist build rmdir /s /q build",
     "local_build": "Xcopy /E /I .\\src .\\build",
-    "build": "mkdir -p build && mkdir -p build/node_modules && cp -r src/* build && cp -r node_modules build/node_modules",
+    "build": "mkdir -p build && mkdir -p build/node_modules && cp -r src/* build && cp -r node_modules/* build/node_modules",
     "start": "node build/localIndex.js"
   },
   "dependencies": {

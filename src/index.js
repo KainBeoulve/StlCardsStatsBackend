@@ -2,7 +2,7 @@ const express = require("express");
 const awsServerlessExpress = require("aws-serverless-express");
 const Router = require("./routers/Router");
 
-exports.handler = (event, context) => {
+exports.handler = async (event, context) => {
     const app = express();
 
     app.use('/', Router);
