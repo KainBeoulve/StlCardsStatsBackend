@@ -186,7 +186,6 @@ Resources:
         PredefinedMetricSpecification:
           PredefinedMetricType: DynamoDBReadCapacityUtilization
 
-
   StlCardsPlayerTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -200,6 +199,20 @@ Resources:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
       TableName: "StlCardsPlayerTable"
+
+  WARConstantsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "Season"
+          AttributeType: "N"
+      KeySchema:
+        - AttributeName: "Season"
+          KeyType: "HASH"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      TableName: "WARConstantsTable"
 
   #################################################################################
   # Cognito Resources

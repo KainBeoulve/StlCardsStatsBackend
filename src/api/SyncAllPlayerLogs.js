@@ -75,9 +75,7 @@ syncPlayerInfo = async (msfClient, dynamoDBClient, playerName) => {
     const fieldData = playerData.activeplayers.playerentry[0].player[field];
     if (fieldData) {
         mappedPlayerItems[field] = fieldData;
-    }
-});
-
-await dynamoDBClient.putItemInTable(mappedPlayerItems, Constants.PLAYER_TABLE_NAME);
+    }});
+    await dynamoDBClient.putItemInTable(mappedPlayerItems, Constants.PLAYER_TABLE_NAME);
 };
 module.exports = SyncAllPlayerLogs;

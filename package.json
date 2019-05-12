@@ -15,10 +15,13 @@
   "dependencies": {
     "aws-serverless-express": "^3.3.6",
     "express": "^4.16.4",
+    "form-data": "^2.3.3",
     "moment": "^2.24.0",
-    "mysportsfeeds-node": "^2.0.1"
+    "mysportsfeeds-node": "^2.0.1",
+    "node-fetch": "^2.5.0",
+    "papaparse": "^4.6.3"
   },
   "devDependencies": {
-    "aws-sdk": "^2.438.0"
+    "aws-sdk": "^2.453.0"
   }
 }
