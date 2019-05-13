@@ -22,7 +22,7 @@ class FanGraphsClient {
         });
         const textResponse = await response.text();
         return textResponse.replace("\ufeff","");
-    }
+    };
 
     /**
      * Function obtains NL specific data required for calculations from FanGraphs
@@ -39,6 +39,6 @@ class FanGraphsClient {
         });
         const textResponse = await response.text();
         return textResponse.replace("\ufeff","");
-    }
+    };
 }
 module.exports = FanGraphsClient;

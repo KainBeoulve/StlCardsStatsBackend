@@ -10,5 +10,9 @@ class HelperFunctions {
         const nameArray = name.split("-");
         return `${nameArray[1]}-${nameArray[0]}`
     };
+
+    static getLastEntry(array) {
+        return array[array.length - 1];
+    };
 }
 module.exports = HelperFunctions;

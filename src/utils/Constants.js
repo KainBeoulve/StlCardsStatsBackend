@@ -15,6 +15,19 @@ class Constants {
             "officialImageSrc"
         ]
     };
+    static get ERRORS() {
+        return {
+            statisticError: "Something went wrong with obtaining player statistics, please contact administrator."
+        }
+    };
+    static get STATISTICS() {
+        return {
+            battingAverage: "battingAverage",
+            sluggingPercentage: "sluggingPercentage",
+            onBasePercentage: "onBasePercentage",
+            onBasePlusSluggingPercentage: "onBasePlusSluggingPercentage"
+        }
+    };
 
     static get FANGRAPHS_CONSTANTS() { return {
         eventTarget: {

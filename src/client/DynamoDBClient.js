@@ -5,49 +5,61 @@ const HelperFunctions = require("../utils/HelperFunctions");
 class DynamoDBClient {
     constructor() {
         HelperFunctions.setAWSConfig(AWS);
-        this.DynamoDB = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+        this.DynamoDBDocumentClient = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
     };
 
     /**
-     * Wrapper function for Dynamo putItem for correct formatting
-     * @param items: Formatted as {key1: value1, key2: value2...}
+     * Puts an item into the specified Dynamo Table
+     * @param item: Formatted as {key1: value1, key2: value2...}
      * @param tableName: name of table to put data into
      */
-    putItemInTable(items, tableName) {
-        const mappedItems = {};
-        Object.keys(items).forEach(key => {
-            const typeString = DynamoDBClient.getValueType(items[key]);
-            mappedItems[key] = {[typeString]: items[key].toString()};
-        });
-        return this.DynamoDB.putItem({Item: mappedItems, TableName: tableName}).promise();
+    putItemInTable(item, tableName) {
+        return this.DynamoDBDocumentClient.put({Item: item, TableName: tableName}).promise();
     };
 
+    //TODO: Probably can only use one get method and pass in table as a param, or have multiple clients (one for each table)
+
     /**
-     * Function to return the special item that corresponds to the last date the data was synced
+     * Function to return the special item that corresponds to the last gameDates the data was synced
      */
     async getLastSyncedDate() {
-        const data = await this.DynamoDB.getItem(
+        const data = await this.DynamoDBDocumentClient.get(
             {
                 Key: {
-                    PlayerName: {
-                        S: Constants.LAST_SYNCED_DATE
-                    }
+                    PlayerName: Constants.LAST_SYNCED_DATE
                 },
                 TableName: Constants.PLAYER_TABLE_NAME
             }).promise();
-        return data.Item && data.Item.Date ? parseInt(data.Item.Date.N) : "";
+        return data.Item && data.Item.Date ? data.Item.Date : "";
     };
 
-    static getValueType(value) {
-        if (typeof value === "string") {
-            return "S";
-        } else if (typeof value === "number") {
-            return "N";
-        } else if (typeof value === "boolean") {
-            return "BOOL";
-        } else {
-            throw new Error(`Unsupported Item Type for Item ${value}`);
-        }
+    /**
+     * Function to retrieve player data from the player table
+     * @param playerName: Name of player to retrieve data for
+     */
+    async getPlayerData(playerName) {
+        return this.DynamoDBDocumentClient.get(
+            {
+                Key: {
+                    PlayerName: playerName
+                },
+                TableName: Constants.PLAYER_TABLE_NAME
+            }).promise();
+    };
+
+    /**
+     * Function to return stats for a given player
+     * @param playerName: Name of player to retrieve stats for
+     */
+    queryStatsForPlayer(playerName) {
+        const params = {
+            ExpressionAttributeValues: {
+                ":hkey": playerName
+            },
+            KeyConditionExpression: "PlayerName = :hkey",
+            TableName: Constants.DATA_TABLE_NAME
+        };
+        return this.DynamoDBDocumentClient.query(params).promise();
     };
 }
 module.exports = DynamoDBClient;

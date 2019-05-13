@@ -2,6 +2,7 @@ const express = require("express");
 const SystemsManagerClient = require("../client/SystemsManagerClient");
 const DynamoDBClient = require("../client/DynamoDBClient");
 const MySportsFeedsClient = require("../client/MySportsFeedsClient");
+const StatisticsHandler = require("../handler/StatisticsHandler");
 const Constants = require("../utils/Constants");
 const HelperFunctions = require("../utils/HelperFunctions");
 
@@ -38,7 +39,7 @@ SyncAllPlayerLogs.all('/', async (req, res) => {
             }
 
             Object.keys(log.stats).forEach(key => {
-                items[key] = log.stats[key]["#text"];
+                items[key] = parseFloat(log.stats[key]["#text"]);
             });
             return dynamoDBClient.putItemInTable(items, Constants.DATA_TABLE_NAME);
         }));
@@ -49,6 +50,8 @@ SyncAllPlayerLogs.all('/', async (req, res) => {
                 PlayerName: Constants.LAST_SYNCED_DATE,
                 Date: mostRecentDate
             }, Constants.PLAYER_TABLE_NAME);
+
+        // TODO: Known errors in data need to be updated here before calculating statistics
 
         // Add all player biographical data to the player table
         await Promise.all(addedPlayers.map(player => {
@@ -66,15 +69,23 @@ SyncAllPlayerLogs.all('/', async (req, res) => {
 syncPlayerInfo = async (msfClient, dynamoDBClient, playerName) => {
     const playerData = await msfClient.getPlayerData(HelperFunctions.swapPlayerNames(playerName));
 
-    const mappedPlayerItems = {
+    let mappedPlayerItems = {
         PlayerName: playerName
     };
 
     Constants.PLAYER_FIELDS.forEach(field => {
-    const fieldData = playerData.activeplayers.playerentry[0].player[field];
-    if (fieldData) {
-        mappedPlayerItems[field] = fieldData;
-    }});
+        const fieldData = playerData.activeplayers.playerentry[0].player[field];
+        if (fieldData) {
+            mappedPlayerItems[field] = fieldData;
+        }
+    });
+
+    // If player is not a pitcher append their cached stats
+    if(mappedPlayerItems.Position !== "P") {
+        const playerStats = await StatisticsHandler.calculatePlayerBattingStatistics(playerName);
+        mappedPlayerItems = Object.assign(mappedPlayerItems, playerStats);
+    }
+
     await dynamoDBClient.putItemInTable(mappedPlayerItems, Constants.PLAYER_TABLE_NAME);
 };
 module.exports = SyncAllPlayerLogs;
