@@ -21,7 +21,6 @@ SyncAllPlayerLogs.all('/', async (req, res) => {
         const data = await msfClient.getAllGameLogs(lastSyncedDate);
 
         // Add all game log data to the data table
-
         const addedPlayers = [];
         let mostRecentDate = lastSyncedDate || 0;
         await Promise.all(data.playergamelogs.gamelogs.map(log => {

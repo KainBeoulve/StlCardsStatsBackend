@@ -24,6 +24,7 @@ Resources:
         Variables:
           DATA_TABLE_NAME: !Ref StlCardsDataTable
           PLAYER_TABLE_NAME: !Ref StlCardsPlayerTable
+          WAR_CONSTANTS_TABLE_NAME: !Ref WARConstantsTable
       Role: !GetAtt StlCardsStatsBackendFunctionLambdaRole.Arn
       Timeout: 900
       MemorySize: 3008
