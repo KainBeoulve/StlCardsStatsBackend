@@ -4,7 +4,10 @@ Description: CFN Template for StlCardsStats Project Backend
 
 Globals:
   Api:
-    Cors: "'*'"
+    Cors:
+      AllowMethods: "'*'"
+      AllowHeaders: "'*'"
+      AllowOrigin: "'*'"
     Auth:
       DefaultAuthorizer: MyCognitoAuth
       Authorizers:
