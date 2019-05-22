@@ -4,10 +4,6 @@ Description: CFN Template for StlCardsStats Project Backend
 
 Globals:
   Api:
-    Cors:
-      AllowMethods: "'*'"
-      AllowHeaders: "'*'"
-      AllowOrigin: "'*'"
     Auth:
       DefaultAuthorizer: MyCognitoAuth
       Authorizers:
@@ -58,6 +54,11 @@ Resources:
           Properties:
             Path: '/{proxy+}'
             Method: delete
+        optionsProxy:
+          Type: Api
+          Properties:
+            Path: '/{proxy+}'
+            Method: options
   StlCardsStatsBackendFunctionLambdaRole:
     Type: AWS::IAM::Role
     Properties:
