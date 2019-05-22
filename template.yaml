@@ -59,6 +59,8 @@ Resources:
           Properties:
             Path: '/{proxy+}'
             Method: options
+            Auth:
+              Authorizer: NONE
   StlCardsStatsBackendFunctionLambdaRole:
     Type: AWS::IAM::Role
     Properties:
