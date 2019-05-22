@@ -58,11 +58,6 @@ Resources:
           Properties:
             Path: '/{proxy+}'
             Method: delete
-        optionsProxy:
-          Type: Api
-          Properties:
-            Path: '/{proxy+}'
-            Method: options
   StlCardsStatsBackendFunctionLambdaRole:
     Type: AWS::IAM::Role
     Properties:
