@@ -22,7 +22,7 @@ Resources:
       CodeUri: ./build
       Environment:
         Variables:
-          DATA_TABLE_NAME: !Ref StlCardsDataTable
+          DATA_TABLE_NAME: !Ref StlCardsGameLogTable
           PLAYER_TABLE_NAME: !Ref StlCardsPlayerTable
           WAR_CONSTANTS_TABLE_NAME: !Ref WARConstantsTable
       Role: !GetAtt StlCardsStatsBackendFunctionLambdaRole.Arn
@@ -108,7 +108,7 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
-      TableName: "StlCardsDataTable"
+      TableName: "StlCardsGameLogTable"
   WriteCapacityScalableTarget:
     Type: AWS::ApplicationAutoScaling::ScalableTarget
     Properties:
@@ -117,7 +117,7 @@ Resources:
       ResourceId: !Join
         - /
         - - table
-          - !Ref StlCardsDataTable
+          - !Ref StlCardsGameLogTable
       RoleARN: !GetAtt ScalingRole.Arn
       ScalableDimension: dynamodb:table:WriteCapacityUnits
       ServiceNamespace: dynamodb
@@ -129,7 +129,7 @@ Resources:
       ResourceId: !Join
         - /
         - - table
-          - !Ref StlCardsDataTable
+          - !Ref StlCardsGameLogTable
       RoleARN: !GetAtt ScalingRole.Arn
       ScalableDimension: dynamodb:table:ReadCapacityUnits
       ServiceNamespace: dynamodb
