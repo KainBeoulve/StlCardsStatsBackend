@@ -16,7 +16,7 @@ class StatisticsHandler {
 
             for (let i = 0; i < sortedGameRecords.length; i++) {
 
-                if (i !== sortedGameRecords.length -1 ) {
+                if (i !== sortedGameRecords.length-1 ) {
                     if (sortedGameRecords[i].Date === sortedGameRecords[i + 1].Date) {
                         continue;
                     }

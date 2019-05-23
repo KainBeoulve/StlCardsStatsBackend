@@ -92,7 +92,7 @@ Resources:
   ###########################################################################
   # DynamoDB Tables & Read/Write Autoscaling Resources
   ###########################################################################
-  StlCardsDataTable:
+  StlCardsGameLogTable:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
