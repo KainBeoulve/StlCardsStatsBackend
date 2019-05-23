@@ -11,18 +11,17 @@ class StatisticsHandler {
             // Sort by Dates
             const sortedGameRecords = data.Items.sort((a, b) => a.Date - b.Date);
 
-            // This takes care of doubleheaders, they will be treated as cumulative for a day
             const sortedRecordsWithoutDuplicates = [];
 
+            // This loop takes care of doubleheaders, they will be treated as cumulative for a day
             for (let i = 0; i < sortedGameRecords.length; i++) {
-
                 if (i !== sortedGameRecords.length-1 ) {
                     if (sortedGameRecords[i].Date === sortedGameRecords[i + 1].Date) {
                         continue;
                     }
                 }
 
-                if (i !== 0 ) {
+                if (i !== 0) {
                     if (sortedGameRecords[i - 1].Date === sortedGameRecords[i].Date) {
                         const combinedStatsObject = {};
                         Object.keys(sortedGameRecords[i]).forEach(key => {

@@ -22,7 +22,7 @@ Resources:
       CodeUri: ./build
       Environment:
         Variables:
-          DATA_TABLE_NAME: !Ref StlCardsGameLogTable
+          GAME_LOG_TABLE_NAME: !Ref StlCardsGameLogTable
           PLAYER_TABLE_NAME: !Ref StlCardsPlayerTable
           WAR_CONSTANTS_TABLE_NAME: !Ref WARConstantsTable
       Role: !GetAtt StlCardsStatsBackendFunctionLambdaRole.Arn

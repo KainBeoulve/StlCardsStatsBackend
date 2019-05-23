@@ -57,7 +57,7 @@ class DynamoDBClient {
                 ":hkey": playerName
             },
             KeyConditionExpression: "PlayerName = :hkey",
-            TableName: Constants.DATA_TABLE_NAME
+            TableName: Constants.GAME_LOG_TABLE_NAME
         };
         return this.DynamoDBDocumentClient.query(params).promise();
     };

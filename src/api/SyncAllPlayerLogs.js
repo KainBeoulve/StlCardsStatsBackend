@@ -43,7 +43,7 @@ SyncAllPlayerLogs.all('/', async (req, res) => {
             Object.keys(log.stats).forEach(key => {
                 items[key] = parseFloat(log.stats[key]["#text"]);
             });
-            return dynamoDBClient.putItemInTable(items, Constants.DATA_TABLE_NAME);
+            return dynamoDBClient.putItemInTable(items, Constants.GAME_LOG_TABLE_NAME);
         }));
 
         // Add the special item for lastSyncedDate to the players table
