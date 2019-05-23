@@ -98,12 +98,12 @@ Resources:
       AttributeDefinitions:
         - AttributeName: "PlayerName"
           AttributeType: "S"
-        - AttributeName: "Date"
-          AttributeType: "N"
+        - AttributeName: "GameId"
+          AttributeType: "S"
       KeySchema:
         - AttributeName: "PlayerName"
           KeyType: "HASH"
-        - AttributeName: "Date"
+        - AttributeName: "GameId"
           KeyType: "RANGE"
       ProvisionedThroughput:
         ReadCapacityUnits: 5

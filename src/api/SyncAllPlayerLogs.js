@@ -26,11 +26,13 @@ SyncAllPlayerLogs.all('/', async (req, res) => {
         let mostRecentDate = lastSyncedDate || 0;
         await Promise.all(data.playergamelogs.gamelogs.map(log => {
             const playerName = `${log.player.LastName.replace(/[^a-zA-Z]/g, "")}-${log.player.FirstName.replace(/[^a-zA-Z]/g, "")}`;
+            const gameId = log.game.id;
             const date = parseInt(log.game.date.replace(/-/g, ""), 10);
             mostRecentDate = date > mostRecentDate ? date : mostRecentDate;
 
             const items = {
                 PlayerName: playerName,
+                GameId: gameId,
                 Date: date
             };
 
