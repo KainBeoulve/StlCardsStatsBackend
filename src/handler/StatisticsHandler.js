@@ -38,54 +38,37 @@ class StatisticsHandler {
                 sortedRecordsWithoutDuplicates.push(sortedGameRecords[i]);
             }
 
+            // Instantiate the statistics object
             const stats = {
-                gameDates: [],
-                atBats: [],
-                plateAppearances: [],
-                hits: [],
-                hitByPitch: [],
-                runsScored: [],
-                runsBattedIn: [],
-                walks: [],
-                strikeouts: [],
-                sacrificeFlies: [],
-                totalBases: [],
-                battingAverage: [],
-                sluggingPercentage: [],
-                onBasePercentage: [],
-                onBasePlusSluggingPercentage: []
+                gameDates: []
             };
 
-            // TODO: Clean this up, use constants and foreach
+            // Add all statistics to the returned object
             sortedRecordsWithoutDuplicates.forEach(record => {
-                if (stats.atBats.length === 0) {
-                    stats.atBats.push(record.AtBats);
-                    stats.plateAppearances.push(record.PlateAppearances);
-                    stats.hits.push(record.Hits);
-                    stats.hitByPitch.push(record.HitByPitch);
-                    stats.runsScored.push(record.Runs);
-                    stats.runsBattedIn.push(record.RunsBattedIn);
-                    stats.walks.push(record.BatterWalks);
-                    stats.strikeouts.push(record.BatterStrikeouts);
-                    stats.sacrificeFlies.push(record.BatterSacrificeFlies);
-                    stats.totalBases.push(record.TotalBases);
-                } else {
-                    stats.atBats.push(HelperFunctions.getLastEntry(stats.atBats) + record.AtBats);
-                    stats.plateAppearances.push(HelperFunctions.getLastEntry(stats.plateAppearances) + record.PlateAppearances);
-                    stats.hits.push(HelperFunctions.getLastEntry(stats.hits) + record.Hits);
-                    stats.hitByPitch.push(HelperFunctions.getLastEntry(stats.hitByPitch) + record.HitByPitch);
-                    stats.runsScored.push(HelperFunctions.getLastEntry(stats.runsScored) + record.Runs);
-                    stats.runsBattedIn.push(HelperFunctions.getLastEntry(stats.runsBattedIn) + record.RunsBattedIn);
-                    stats.walks.push(HelperFunctions.getLastEntry(stats.walks) + record.BatterWalks);
-                    stats.strikeouts.push(HelperFunctions.getLastEntry(stats.strikeouts) + record.BatterStrikeouts);
-                    stats.sacrificeFlies.push(HelperFunctions.getLastEntry(stats.sacrificeFlies) + record.BatterSacrificeFlies);
-                    stats.totalBases.push(HelperFunctions.getLastEntry(stats.totalBases) + record.TotalBases);
-                }
+                // Add the game date to the gameDates array
                 stats.gameDates.push(record.Date);
-                stats.battingAverage.push(StatisticsHandler.calculateBattingStatistic(stats, Constants.STATISTICS.battingAverage));
-                stats.onBasePercentage.push(StatisticsHandler.calculateBattingStatistic(stats, Constants.STATISTICS.onBasePercentage));
-                stats.sluggingPercentage.push(StatisticsHandler.calculateBattingStatistic(stats, Constants.STATISTICS.sluggingPercentage));
-                stats.onBasePlusSluggingPercentage.push(StatisticsHandler.calculateBattingStatistic(stats, Constants.STATISTICS.onBasePlusSluggingPercentage));
+
+                // Add the raw statistics for this record (cumulative if past the first entry)
+                Object.keys(Constants.RAW_STATISTICS).forEach(key => {
+                    if (!stats[key]) {
+                        const newStat = [];
+                        newStat.push(record[Constants.RAW_STATISTICS[key]]);
+                        stats[key] = newStat;
+                    } else {
+                        stats[key].push(HelperFunctions.getLastEntry(stats[key]) + record[Constants.RAW_STATISTICS[key]]);
+                    }
+                });
+
+                // Add the calculated statistics for this record
+                Object.keys(Constants.CALCULATED_STATISTICS).forEach(key => {
+                    if (!stats[key]) {
+                        const newStat = [];
+                        newStat.push(record[Constants.CALCULATED_STATISTICS[key]]);
+                        stats[key] = newStat;
+                    } else {
+                        stats[key].push(StatisticsHandler.calculateBattingStatistic(stats, Constants.CALCULATED_STATISTICS[key]));
+                    }
+                });
             });
 
             return stats;
@@ -104,12 +87,12 @@ class StatisticsHandler {
     static calculateBattingStatistic(stats, statistic) {
         let atBats = parseFloat(HelperFunctions.getLastEntry(stats.atBats));
         switch(statistic) {
-            case Constants.STATISTICS.battingAverage:
+            case Constants.CALCULATED_STATISTICS.battingAverage:
                 if (atBats) {
                     return HelperFunctions.getLastEntry(stats.hits)/atBats;
                 }
                 return 0;
-            case Constants.STATISTICS.onBasePercentage:
+            case Constants.CALCULATED_STATISTICS.onBasePercentage:
                 const hbp = HelperFunctions.getLastEntry(stats.hitByPitch);
                 const walks = HelperFunctions.getLastEntry(stats.walks);
                 const denominator = parseFloat(HelperFunctions.getLastEntry(stats.atBats) + walks +
@@ -118,12 +101,12 @@ class StatisticsHandler {
                     return (HelperFunctions.getLastEntry(stats.hits) + walks + hbp) / denominator;
                 }
                 return 0;
-            case Constants.STATISTICS.sluggingPercentage:
+            case Constants.CALCULATED_STATISTICS.sluggingPercentage:
                 if (atBats) {
                     return HelperFunctions.getLastEntry(stats.totalBases)/atBats;
                 }
                 return 0;
-            case Constants.STATISTICS.onBasePlusSluggingPercentage:
+            case Constants.CALCULATED_STATISTICS.onBasePlusSluggingPercentage:
                 return HelperFunctions.getLastEntry(stats.onBasePercentage) + HelperFunctions.getLastEntry(stats.sluggingPercentage);
             default:
                 console.error(`Invalid statistic to calculate: ${statistic}`);

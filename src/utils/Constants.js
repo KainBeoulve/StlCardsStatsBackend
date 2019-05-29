@@ -17,10 +17,27 @@ class Constants {
     };
     static get ERRORS() {
         return {
-            statisticError: "Something went wrong with obtaining player statistics, please contact administrator."
+            statisticError: "Something went wrong with obtaining player statistics, please contact administrator.",
+            noPlayerError: "Player was not found in the database, contact administrator."
         }
     };
-    static get STATISTICS() {
+
+    static get RAW_STATISTICS() {
+        return {
+            atBats: "AtBats",
+            plateAppearances: "PlateAppearances",
+            hits: "Hits",
+            hitByPitch: "HitByPitch",
+            runsScored: "Runs",
+            runsBattedIn: "RunsBattedIn",
+            walks: "BatterWalks",
+            strikeouts: "BatterStrikeouts",
+            sacrificeFlies: "BatterSacrificeFlies",
+            totalBases: "TotalBases"
+        }
+    };
+
+    static get CALCULATED_STATISTICS() {
         return {
             battingAverage: "battingAverage",
             sluggingPercentage: "sluggingPercentage",
