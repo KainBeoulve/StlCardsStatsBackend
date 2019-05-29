@@ -63,7 +63,7 @@ class StatisticsHandler {
                 Object.keys(Constants.CALCULATED_STATISTICS).forEach(key => {
                     if (!stats[key]) {
                         const newStat = [];
-                        newStat.push(record[Constants.CALCULATED_STATISTICS[key]]);
+                        newStat.push(StatisticsHandler.calculateBattingStatistic(stats, Constants.CALCULATED_STATISTICS[key]));
                         stats[key] = newStat;
                     } else {
                         stats[key].push(StatisticsHandler.calculateBattingStatistic(stats, Constants.CALCULATED_STATISTICS[key]));
