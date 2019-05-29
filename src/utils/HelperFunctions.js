@@ -2,9 +2,7 @@ class HelperFunctions {
 
     static setAWSConfig(AWS) {
         AWS.config.update({
-            region: "us-east-1",
-            accessKeyId: "AKIA2MTN7K4U7HIF7TGV",
-            secretAccessKey: "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"
+            region: "us-east-1"
         });
     };
 
