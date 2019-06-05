@@ -107,13 +107,13 @@ Resources:
           KeyType: "RANGE"
       ProvisionedThroughput:
         ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
+        WriteCapacityUnits: 25
       TableName: "StlCardsGameLogTable"
   WriteCapacityScalableTarget:
     Type: AWS::ApplicationAutoScaling::ScalableTarget
     Properties:
-      MaxCapacity: 25
-      MinCapacity: 5
+      MaxCapacity: 50
+      MinCapacity: 25
       ResourceId: !Join
         - /
         - - table
