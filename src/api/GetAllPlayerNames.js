@@ -15,7 +15,7 @@ GetAllPlayerNames.get('/', async (req, res) => {
                 item => req.query.getPitchers && JSON.parse(req.query.getPitchers)
                     ? item.Position === Constants.PITCHER_STRING
                     : item.Position !== Constants.PITCHER_STRING
-            ).map(item => item.PlayerName);
+            ).map(item => ({PlayerName: item.PlayerName, officialImageSrc: item.officialImageSrc}));
             res.status(200).set("Content-Type", "application/json").send(filteredPlayerArray);
         } else {
             console.error(`Dynamo scan call returned empty.`);
