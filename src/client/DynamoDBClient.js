@@ -37,7 +37,7 @@ class DynamoDBClient {
      * Function to retrieve player data from the player table
      * @param playerName: Name of player to retrieve data for
      */
-    async getPlayerData(playerName) {
+    getPlayerData(playerName) {
         return this.DynamoDBDocumentClient.get(
             {
                 Key: {
@@ -60,6 +60,20 @@ class DynamoDBClient {
             TableName: Constants.GAME_LOG_TABLE_NAME
         };
         return this.DynamoDBDocumentClient.query(params).promise();
+    };
+
+    /**
+     * Function to scan the player table and return all player info
+     */
+    scanPlayerTable() {
+        const params = {
+            ExpressionAttributeValues: {
+                ":hkey": "lastSyncedDate"
+            },
+            FilterExpression : "not (PlayerName in (:hkey))",
+            TableName: Constants.PLAYER_TABLE_NAME
+        };
+        return this.DynamoDBDocumentClient.scan(params).promise();
     };
 }
 module.exports = DynamoDBClient;

@@ -1,5 +1,6 @@
 class Constants {
     static get SEASON() { return "Season" };
+    static get PITCHER_STRING() { return "P" };
     static get GAME_LOG_TABLE_NAME() { return process.env.GAME_LOG_TABLE_NAME || "StlCardsGameLogTable" };
     static get PLAYER_TABLE_NAME() { return process.env.PLAYER_TABLE_NAME || "StlCardsPlayerTable" };
     static get WAR_CONSTANTS_TABLE_NAME() { return process.env.WAR_CONSTANTS_TABLE_NAME || "WARConstantsTable" };

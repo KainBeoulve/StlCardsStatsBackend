@@ -1,5 +1,6 @@
 const express = require("express");
 const GetPlayerInfo = require("../api/GetPlayerInfo");
+const GetAllPlayerNames = require("../api/GetAllPlayerNames");
 const SyncAllPlayerLogs = require("../api/SyncAllPlayerLogs");
 const SyncWARConstants = require("../api/SyncWARConstants");
 
@@ -7,6 +8,7 @@ const Router = express.Router();
 
 Router.use('/syncAllPlayerLogs', SyncAllPlayerLogs);
 Router.use('/syncWARConstants', SyncWARConstants);
+Router.use('/getAllPlayerNames', GetAllPlayerNames);
 Router.use('/getPlayerInfo', GetPlayerInfo);
 Router.options("/*", (req, res) => {
     res.status(200).set({
