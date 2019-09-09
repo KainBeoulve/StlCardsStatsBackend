@@ -71,6 +71,12 @@ SyncAllPlayerLogs.all('/', async (req, res) => {
 syncPlayerInfo = async (msfClient, dynamoDBClient, playerName) => {
     const playerData = await msfClient.getPlayerData(HelperFunctions.swapPlayerNames(playerName));
 
+    // Return if player data does not exist, this is apparently a change they made recently where in-season traded or
+    // released players biographical data gets removed.
+    if (!playerData.activeplayers.playerentry) {
+        return;
+    }
+
     let mappedPlayerItems = {
         PlayerName: playerName
     };

@@ -31,7 +31,7 @@ class MySportsFeedsClient {
             return await this.msf.getData("mlb", "2019-regular", "player_gamelogs", "json",
                 {
                     team: "stl",
-                    gameDates: parsedDate.isValid() ? `since-${lastSyncedDate}` : "since-20190101",
+                    date: parsedDate.isValid() ? `since-${lastSyncedDate}` : "since-20190101",
                     sort: "player.lastname",
                     force: true
                 });
