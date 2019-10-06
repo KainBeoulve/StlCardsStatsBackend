@@ -10,7 +10,7 @@
     "clean": "if exist build rmdir /s /q build",
     "local_build": "Xcopy /E /I .\\src .\\build",
     "build": "mkdir -p build && mkdir -p build/node_modules && cp -r src/* build && cp -r node_modules/* build/node_modules",
-    "start": "node build/localIndex.js"
+    "start": "node src/localIndex.js"
   },
   "dependencies": {
     "aws-serverless-express": "^3.3.6",
@@ -18,12 +18,13 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "form-data": "^2.5.1",
+    "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "mysportsfeeds-node": "^2.0.1",
     "node-fetch": "^2.6.0",
     "papaparse": "^4.6.3"
   },
   "devDependencies": {
-    "aws-sdk": "^2.524.0"
+    "aws-sdk": "^2.543.0"
   }
 }
