@@ -5,6 +5,9 @@ const awsServerlessExpress = require("aws-serverless-express");
 const Router = require("./routers/Router");
 
 exports.handler = (event, context) => {
+    console.log(event);
+    console.log(context);
+
     const app = express();
 
     app.use(bodyParser.json());
