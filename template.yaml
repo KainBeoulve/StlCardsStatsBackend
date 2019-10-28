@@ -242,27 +242,28 @@ Resources:
       UserPoolId: !Ref StlCardsStatsCognitoUserPool
   #################################################################################
   # CloudWatch Log Updater Event
+  # 10/27/2019 Commenting out while offseason in effect
   #################################################################################
-  DailyLogSyncRule:
-    Type: AWS::Events::Rule
-    Properties:
-      Description: "This functions syncs the player logs every night at 2 AM PDT"
-      ScheduleExpression: "cron(0 9 * * ? *)"
-      State: "ENABLED"
-      Targets:
-        - Arn:
-            Fn::GetAtt:
-              - "StlCardsStatsBackendLambdaFunction"
-              - "Arn"
-          Id: "TargetFunctionV1"
-          Input: "{\"path\":\"/syncAllPlayerLogs\",\"httpMethod\":\"GET\"}"
-  PermissionForEventsToInvokeLambda:
-    Type: AWS::Lambda::Permission
-    Properties:
-      FunctionName: !Ref StlCardsStatsBackendLambdaFunction
-      Action: "lambda:InvokeFunction"
-      Principal: "events.amazonaws.com"
-      SourceArn:
-        Fn::GetAtt:
-          - "DailyLogSyncRule"
-          - "Arn"
+#  DailyLogSyncRule:
+#    Type: AWS::Events::Rule
+#    Properties:
+#      Description: "This functions syncs the player logs every night at 2 AM PDT"
+#      ScheduleExpression: "cron(0 9 * * ? *)"
+#      State: "ENABLED"
+#      Targets:
+#        - Arn:
+#            Fn::GetAtt:
+#              - "StlCardsStatsBackendLambdaFunction"
+#              - "Arn"
+#          Id: "TargetFunctionV1"
+#          Input: "{\"path\":\"/syncAllPlayerLogs\",\"httpMethod\":\"GET\"}"
+#  PermissionForEventsToInvokeLambda:
+#    Type: AWS::Lambda::Permission
+#    Properties:
+#      FunctionName: !Ref StlCardsStatsBackendLambdaFunction
+#      Action: "lambda:InvokeFunction"
+#      Principal: "events.amazonaws.com"
+#      SourceArn:
+#        Fn::GetAtt:
+#          - "DailyLogSyncRule"
+#          - "Arn"
